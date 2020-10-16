@@ -12,7 +12,7 @@ import letters from '../data/letters.json';
 
 import { colors, contentWidth } from "./GlobalStyles";
 
-const initialGameState = { started: false, over: false, win: false, pause: false };
+const initialGameState = { started: false, over: false, win: false, pause: true };
 
 const App = () => {
   const [game, setGame] = useState(initialGameState);
@@ -22,7 +22,7 @@ const App = () => {
   const [usedLetters, setUsedLetters] = useState([]);
 
   const handleStart = () => {
-    setGame({ ...game, started: !game.started});
+    setGame({ ...game, pause: !game.pause, started: !game.started});
     if (word.str === "") {
       getNewWord();
     }    
@@ -58,13 +58,20 @@ const App = () => {
     setUsedLetters(usedLetters.concat(lettr));
   };
 
+const handleReset = () => {
+  setGame({ ...game, pause: !game.pause, started: game.started});
+  getNewWord();
+  setWrongGuesses(wrongGuesses.splice());
+  setUsedLetters(usedLetters.splice());
+}
+
   return (
     <Wrapper>
       {/* <GameOverModal /> */}
       <Header />
       <Nav>
         <Button onClickFunc={handleStart}>{buttonLabel}</Button>
-        <Button>Reset</Button>
+        <Button onClickFunc={handleReset}>Reset</Button>
       </Nav>
       {game.started && (
       <>
