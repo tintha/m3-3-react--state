@@ -4,8 +4,6 @@ import styled from "styled-components";
 import { colors } from "./GlobalStyles";
 
 const DeadLetters = ({wrongGuesses}) => {
- console.log(wrongGuesses);
-  
   return (
     <Wrapper>
       <h2>Dead Letters</h2>

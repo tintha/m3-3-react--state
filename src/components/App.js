@@ -12,7 +12,7 @@ import letters from '../data/letters.json';
 
 import { colors, contentWidth } from "./GlobalStyles";
 
-const initialGameState = { started: false, over: false, win: false, pause: true };
+const initialGameState = { started: false, over: false, win: false, pause: false };
 
 const App = () => {
   const [game, setGame] = useState(initialGameState);
@@ -26,17 +26,17 @@ const App = () => {
     if (word.str === "") {
       getNewWord();
     }    
+   
     setButtonLabel("Pause");
   }
 
   function getNewWord() {
-    let randomWord = words[Math.floor(Math.random() * (words.length - 0))];    
+    let randomWord = words[Math.floor(Math.random() * words.length)];    
     let revealed = [];
     for (let i = 0; i < randomWord.length; i++) {
       revealed.push("");
     }
       setWord(() => {
-        console.log(revealed);
         return { ...word, str: randomWord, revealed: revealed, };
       });
   }
@@ -46,7 +46,7 @@ const App = () => {
     let wordArray = word.str.split("");
     if (!wordArray.includes(lettr)) {
       setWrongGuesses(wrongGuesses.concat(lettr));
-      if (wrongGuesses.length > 9) {
+      if (wrongGuesses.length >= 9) {
         handleEndGame(false);
       }
     } else {

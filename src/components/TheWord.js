@@ -2,10 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 const TheWord = ({word}) => {
-
   return <Wrapper>
     {word.revealed.map(letter =>  
-       <Span line={letter}>{letter}</Span>
+       <Span line={letter} key={letter+Math.random()*10}>{letter}</Span>
     )}      
     </Wrapper>
 }
