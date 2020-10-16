@@ -46,14 +46,18 @@ const App = () => {
     let wordArray = word.str.split("");
     if (!wordArray.includes(lettr)) {
       setWrongGuesses(wrongGuesses.concat(lettr));
+      if (wrongGuesses.length > 9) {
+        handleEndGame(false);
+      }
     } else {
       for (let i = 0; i <= word.str.length; i++) {
         if (lettr === word.str[i]) {
-          console.log(i);
           word.revealed[i] = lettr;
         }
-      }
-      
+      } 
+    }
+    if (word.revealed.join("") === word.str) {
+      handleEndGame(true);
     }
     setUsedLetters(usedLetters.concat(lettr));
   };
@@ -64,6 +68,11 @@ const handleReset = () => {
   setWrongGuesses(wrongGuesses.splice());
   setUsedLetters(usedLetters.splice());
 }
+
+const handleEndGame = (win) => {
+  setGame({...game, over: true, win: win});
+  alert(`Game Over! You ${win ? "win" : "lose"}`);
+};
 
   return (
     <Wrapper>
