@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import Header from "./Header";
 import Button from "./Button";
@@ -7,28 +7,60 @@ import DeadLetters from "./DeadLetters";
 import TheWord from "./TheWord";
 import Keyboard from "./Keyboard";
 import GameOverModal from "./GameOverModal";
+import words from '../data/words.json';
+import letters from '../data/letters.json';
 
 import { colors, contentWidth } from "./GlobalStyles";
 
+const initialGameState = { started: false, over: false, win: false, pause: false };
+
 const App = () => {
+  const [game, setGame] = useState(initialGameState);
+  const [word, setWord] = useState({ str: "" });
+  const [buttonLabel, setButtonLabel] = useState("Start");
+  const [wrongGuesses, setWrongGuesses] = useState(['a', 'b']);
+  const [usedLetters, setUsedLetters] = useState(["v", "t"]);
+
+  const handleStart = () => {
+    setGame({ ...game, started: !game.started});
+    if (word.str === "") {
+      getNewWord();
+    }    
+    setButtonLabel("Pause");
+  }
+
+  function getNewWord() {
+    let randomWord = words[Math.floor(Math.random() * (words.length - 0))];    
+    let revealed = [];
+    for (let i = 0; i < randomWord.length; i++) {
+      revealed.push("");
+    }
+      setWord(() => {
+        console.log(revealed);
+        return { ...word, str: randomWord, revealed: revealed, };
+      });
+  }
+
   return (
     <Wrapper>
       {/* <GameOverModal /> */}
       <Header />
       <Nav>
-        <Button>btn 1</Button>
+        <Button onClickFunc={handleStart}>{buttonLabel}</Button>
         <Button>btn 2</Button>
       </Nav>
+      {game.started && (
       <>
         <Container>
           <Deadman />
           <RightColumn>
-            <DeadLetters />
-            <TheWord />
+            <DeadLetters wrongGuesses={wrongGuesses} />
+            <TheWord word={word} />
           </RightColumn>
         </Container>
-        <Keyboard />
+        <Keyboard letters={letters} usedLetters={usedLetters} />
       </>
+      )}
     </Wrapper>
   );
 };

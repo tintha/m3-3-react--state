@@ -3,8 +3,9 @@ import styled from "styled-components";
 
 import { colors } from "./GlobalStyles";
 
-const LetterKey = ({}) => {
-  return <Wrapper>a</Wrapper>;
+const LetterKey = ({letters, usedLetters}) => {
+ const used = usedLetters;
+return letters.map(letter => <Wrapper disabled={(used.includes(letter)) ? true : false}>{letter}</Wrapper>);
 };
 
 const Wrapper = styled.button`
