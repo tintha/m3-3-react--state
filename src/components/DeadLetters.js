@@ -8,7 +8,7 @@ const DeadLetters = ({wrongGuesses}) => {
     <Wrapper>
       <h2>Dead Letters</h2>
       <List>
-      {wrongGuesses.map(letter => <Letter>{letter}</Letter>)}
+      {wrongGuesses.map(letter => <Letter key={letter+Math.random()*10}>{letter}</Letter>)}
       </List>
     </Wrapper>
   );

@@ -12,7 +12,7 @@ import letters from '../data/letters.json';
 
 import { colors, contentWidth } from "./GlobalStyles";
 
-const initialGameState = { started: false, over: false, win: false, pause: false };
+const initialGameState = { started: false, over: false, win: false, pause: true };
 
 const App = () => {
   const [game, setGame] = useState(initialGameState);
@@ -26,8 +26,13 @@ const App = () => {
     if (word.str === "") {
       getNewWord();
     }    
-   
-    setButtonLabel("Pause");
+    
+    if (game.pause === false && game.started === true){
+      setButtonLabel("Continue");
+    } else if (game.pause === true && game.started === false) {
+      setButtonLabel("Pause");
+    }
+    
   }
 
   function getNewWord() {
@@ -63,10 +68,14 @@ const App = () => {
   };
 
 const handleReset = () => {
+  if (game.pause === true && game.started === false) {
+    // Do nothing
+  } else {
   setGame({ ...game, pause: !game.pause, started: game.started});
   getNewWord();
   setWrongGuesses(wrongGuesses.splice());
   setUsedLetters(usedLetters.splice());
+  }
 }
 
 const handleEndGame = (win) => {
